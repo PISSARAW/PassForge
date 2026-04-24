@@ -10,8 +10,6 @@ Score levels returned by zxcvbn (0 – 4):
     2  Somewhat guessable – protection from unthrottled online attacks
     3  Safely unguessable – moderate protection from offline slow-hash scenario
     4  Very unguessable – strong protection from offline slow-hash scenario
-
-TODO: Implement the functions below.
 """
 
 from __future__ import annotations

@@ -3,9 +3,6 @@ tests/test_scorer.py
 --------------------
 Unit tests for ``passforge.scorer``.
 
-TODO: Fill in each test body once the module is implemented.
-      Replace every ``pytest.skip(...)`` call with real assertions.
-
 Suggested test matrix
 ---------------------
 score_password
@@ -26,7 +23,6 @@ get_crack_time_display
 
 import pytest
 
-# TODO: uncomment once scorer is implemented
 from passforge.scorer import score_password, get_score_label, get_crack_time_display
 
 

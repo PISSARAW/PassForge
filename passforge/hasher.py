@@ -12,8 +12,6 @@ This module exists purely to demonstrate the concept of one-way hashing
 and to show how a password's hash changes with even a tiny input
 difference (the avalanche effect).  No hash produced here is ever
 written to disk or transmitted.
-
-TODO: Implement the functions below.
 """
 
 from __future__ import annotations

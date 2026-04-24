@@ -3,7 +3,7 @@ passforge.cli
 -------------
 Command-line entry point for PassForge.
 
-Usage examples (once implemented):
+Usage examples:
     passforge --password "MyP@ssw0rd"
     passforge --password "MyP@ssw0rd" --show-hash
     passforge --password "MyP@ssw0rd" --no-color
@@ -17,8 +17,6 @@ Argument reference
 --no-color          Disable ANSI color codes in output (useful for
                     piping or terminals that don't support color).
 --version           Print the PassForge version and exit.
-
-TODO: Implement the functions below and wire up argparse.
 """
 
 from __future__ import annotations
@@ -28,7 +26,6 @@ import sys
 
 from passforge import __version__
 
-# TODO: import the sub-modules you'll call from the CLI
 # from passforge import scorer, entropy, recommendations, hasher
 
 
@@ -51,11 +48,6 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
 
-    # TODO: Add the following arguments:
-    #   --password   (required, str)
-    #   --show-hash  (optional flag, store_true)
-    #   --no-color   (optional flag, store_true)
-    #   --version    (use parser.add_argument with action="version")
     if __version__:
         parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     parser.add_argument("--password", type=str, required=True, help="The password to analyze.")

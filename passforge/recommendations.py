@@ -12,8 +12,6 @@ Key OWASP guidelines applied here:
     - Avoid passwords found in breach databases (zxcvbn covers common ones)
     - Encourage passphrases and random character mixing
     - Warn about keyboard patterns, repetitions, and dictionary words
-
-TODO: Implement the functions below.
 """
 
 from __future__ import annotations

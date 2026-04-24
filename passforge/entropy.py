@@ -10,8 +10,6 @@ a friendly explanation.
 
 Formula used:
     entropy_bits = log2(guesses)
-
-TODO: Implement the functions below.
 """
 
 from __future__ import annotations

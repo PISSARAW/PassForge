@@ -11,7 +11,7 @@ It uses the **zxcvbn** algorithm (originally developed at Dropbox) to produce a
 realistic crack-time estimate and actionable feedback, supplemented with
 **OWASP-aligned recommendations** and an optional **SHA-256 avalanche demo**.
 
-### Features (to be implemented)
+### Features
 
 | Feature | Module |
 |---|---|
@@ -20,6 +20,13 @@ realistic crack-time estimate and actionable feedback, supplemented with
 | OWASP-style improvement tips | `passforge/recommendations.py` |
 | SHA-256 hashing demo (educational) | `passforge/hasher.py` |
 | Clean CLI with argparse | `passforge/cli.py` |
+
+### Current Status
+
+- Core modules (`scorer`, `entropy`, `recommendations`, `hasher`) are implemented.
+- CLI argument parsing is in place (`--password`, `--show-hash`, `--no-color`, `--version`).
+- Some test files are still scaffolded with `pytest.skip(...)` and are pending completion.
+- `print_report` in the CLI remains to be wired to the module outputs.
 
 ---
 
@@ -90,7 +97,8 @@ passforge --password "MyP@ssw0rd" --no-color
 passforge --version
 ```
 
-> **Note:** These commands will work once you have implemented the modules.
+> **Note:** The command interface is available. Output formatting in `print_report`
+> is still in progress.
 
 ---
 
@@ -121,24 +129,12 @@ pytest --cov=passforge --cov-report=term-missing
 
 ---
 
-## Implementation Guide
+## Development Notes
 
-Each Python file in `passforge/` contains skeleton functions with:
-
-- Full **docstrings** describing parameters, return types, and exceptions.
-- A `raise NotImplementedError("TODO: …")` placeholder where the logic goes.
-- Inline comments and hints to guide the implementation.
-
-The matching test files in `tests/` contain `pytest.skip("TODO: …")` stubs
-that list exactly what needs to be verified for each function.
-
-**Suggested order of implementation:**
-
-1. `scorer.py` – the foundation (used by every other module)
-2. `entropy.py` – depends only on `scorer.py` results
-3. `recommendations.py` – depends on `scorer.py` results
-4. `hasher.py` – standalone; no cross-module dependency
-5. `cli.py` – ties everything together
+- The project keeps rich docstrings in each module to describe expected behavior.
+- Tests currently mix implemented checks and scaffolded cases.
+- Recommended next milestone is finishing CLI report rendering and unskipping
+  the remaining test suites.
 
 ---
 
