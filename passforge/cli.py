@@ -56,8 +56,12 @@ def build_parser() -> argparse.ArgumentParser:
     #   --show-hash  (optional flag, store_true)
     #   --no-color   (optional flag, store_true)
     #   --version    (use parser.add_argument with action="version")
-    raise NotImplementedError("TODO: add arguments to parser and return it")
-
+    if __version__:
+        parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
+    parser.add_argument("--password", type=str, required=True, help="The password to analyze.")
+    parser.add_argument("--show-hash", action="store_true", help="Include the SHA-256 demo in the report.")
+    parser.add_argument("--no-color", action="store_true", help="Disable ANSI color codes in output.")
+    return parser
 
 def print_report(password: str, *, show_hash: bool = False, color: bool = True) -> None:
     """Analyze *password* and print a formatted report to stdout.
@@ -71,10 +75,12 @@ def print_report(password: str, *, show_hash: bool = False, color: bool = True) 
     color:
         When ``False``, strip ANSI escape codes from all output.
     """
-    raise NotImplementedError(
-        "TODO: call scorer, entropy, recommendations (and optionally hasher), "
-        "then format and print the results"
-    )
+    if not isinstance(password, str) or not password:
+        raise ValueError("Password must be a non-empty string.")
+    if not isinstance(show_hash, bool):
+        raise ValueError("show_hash must be a boolean.")
+    if not isinstance(color, bool):
+        raise ValueError("color must be a boolean.")
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -88,10 +94,11 @@ def main(argv: list[str] | None = None) -> None:
         Argument list to parse.  Defaults to ``sys.argv[1:]`` when
         ``None``.
     """
-    raise NotImplementedError(
-        "TODO: call build_parser().parse_args(argv), "
-        "then call print_report with the parsed arguments"
-    )
+    if argv is None:
+        argv = sys.argv[1:]
+    parser = build_parser().parse_args(argv)
+    print_report(password=parser.password, show_hash=parser.show_hash, color=parser.no_color)
+    return None
 
 
 if __name__ == "__main__":

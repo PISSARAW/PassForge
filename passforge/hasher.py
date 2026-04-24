@@ -41,10 +41,9 @@ def sha256_hex(password: str) -> str:
     ValueError
         If *password* is empty or not a string.
     """
-    raise NotImplementedError(
-        "TODO: encode password as UTF-8, hash with hashlib.sha256, "
-        "and return hexdigest()"
-    )
+    if not isinstance(password, str) or not password:
+        raise ValueError("Password must be a non-empty string.")
+    return hashlib.sha256(password.encode("utf-8")).hexdigest()
 
 
 def avalanche_demo(password: str) -> dict:
@@ -71,7 +70,13 @@ def avalanche_demo(password: str) -> dict:
         ``"bits_flipped"``
             The number of bits that differ between the two digests (int).
     """
-    raise NotImplementedError(
-        "TODO: hash both passwords, count differing bits (XOR each byte pair), "
-        "and return the result dict"
-    )
+    if not isinstance(password, str) or not password:
+        raise ValueError("Password must be a non-empty string.")
+    original_hash = sha256_hex(password)
+    modified_hash = sha256_hex(password + "!")
+    bits_flipped = sum(bin(int(a, 16) ^ int(b, 16)).count("1") for a, b in zip(original_hash, modified_hash))
+    return {
+        "original_hash": original_hash,
+        "modified_hash": modified_hash,
+        "bits_flipped": bits_flipped
+    }
