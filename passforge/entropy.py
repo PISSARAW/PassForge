@@ -38,7 +38,9 @@ def calculate_entropy_bits(guesses: int | float) -> float:
     ValueError
         If *guesses* is not a positive number.
     """
-    raise NotImplementedError("TODO: return math.log2(guesses)")
+    if not isinstance(guesses, (int, float)) or guesses <= 0:
+        raise ValueError("Guesses must be a positive number.")
+    return math.log2(guesses)
 
 
 def describe_entropy(entropy_bits: float) -> str:
@@ -61,8 +63,18 @@ def describe_entropy(entropy_bits: float) -> str:
     str
         A human-readable sentence describing the entropy level.
     """
-    raise NotImplementedError("TODO: map entropy_bits ranges to description strings")
-
+    if not isinstance(entropy_bits, (int, float)) or entropy_bits < 0:
+        raise ValueError("Entropy bits must be a non-negative number.")
+    if entropy_bits < 28:
+        return "Very low entropy – extremely easy to guess"
+    elif entropy_bits < 36:
+        return "Low entropy – easy to guess"
+    elif entropy_bits < 60:
+        return "Moderate entropy – reasonable for most uses"
+    elif entropy_bits < 128:
+        return "High entropy – difficult to crack offline"
+    else:
+        return "Very high entropy – excellent security"
 
 def entropy_summary(result: dict) -> dict:
     """Build a complete entropy summary from a zxcvbn *result* dict.
@@ -84,7 +96,13 @@ def entropy_summary(result: dict) -> dict:
         ``"guesses"``
             Raw guesses estimate echoed back (int or float).
     """
-    raise NotImplementedError(
-        "TODO: combine calculate_entropy_bits and describe_entropy, "
-        "then return the summary dict"
-    )
+    if not isinstance(result, dict) or "guesses" not in result:
+        raise ValueError("Result must be a dict containing 'guesses'.")
+    guesses = result["guesses"]
+    bits = calculate_entropy_bits(guesses)
+    description = describe_entropy(bits)
+    return {
+        "bits": bits,
+        "description": description,
+        "guesses": guesses
+    }
