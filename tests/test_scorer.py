@@ -27,12 +27,14 @@ get_crack_time_display
 import pytest
 
 # TODO: uncomment once scorer is implemented
-# from passforge.scorer import score_password, get_score_label, get_crack_time_display
+from passforge.scorer import score_password
 
 
 class TestScorePassword:
     def test_returns_dict_for_valid_password(self):
-        pytest.skip("TODO: implement scorer.score_password first")
+        result = score_password("CorrectHorseBatteryStaple!2026")
+        assert isinstance(result, dict)
+        assert "score" in result
 
     def test_raises_value_error_for_empty_string(self):
         pytest.skip("TODO: implement scorer.score_password first")

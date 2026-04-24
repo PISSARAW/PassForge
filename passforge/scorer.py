@@ -17,8 +17,7 @@ TODO: Implement the functions below.
 from __future__ import annotations
 from zxcvbn import zxcvbn
 
-# TODO: import zxcvbn here
-# from zxcvbn import zxcvbn
+
 
 
 def score_password(password: str) -> dict:
@@ -42,7 +41,9 @@ def score_password(password: str) -> dict:
     ValueError
         If *password* is empty or not a string.
     """
-    return zxcvbn(password)
+    if not isinstance(password, str) or not password:
+        raise ValueError("Password must be a non-empty string.")
+    return zxcvbn(password) 
 
 
 def get_score_label(score: int) -> str:
@@ -64,7 +65,16 @@ def get_score_label(score: int) -> str:
     ValueError
         If *score* is outside the range 0–4.
     """
-    raise NotImplementedError("TODO: map score integer to label string")
+    if not isinstance(score, int) or not (0 <= score <= 4):
+        raise ValueError("Score must be an integer between 0 and 4.")
+    switcher = {
+        0: "Very Weak",
+        1: "Weak",
+        2: "Fair",
+        3: "Strong",
+        4: "Very Strong"
+    }
+    return switcher.get(score, "Invalid Score")
 
 
 def get_crack_time_display(result: dict) -> str:
@@ -81,7 +91,6 @@ def get_crack_time_display(result: dict) -> str:
         A display string for the estimated crack time under an offline,
         slow-hash scenario (e.g. ``"3 hours"``).
     """
-    raise NotImplementedError(
-        "TODO: extract crack_times_display['offline_slow_hashing_1e4_per_second'] "
-        "from result and return it"
-    )
+    if not isinstance(result, dict) or "crack_times_display" not in result:
+        raise ValueError("Result must be a dict containing 'crack_times_display'.")
+    return result["crack_times_display"]["offline_slow_hashing_1e4_per_second"]
