@@ -15,6 +15,7 @@ TODO: Implement the functions below.
 """
 
 from __future__ import annotations
+from zxcvbn import zxcvbn
 
 # TODO: import zxcvbn here
 # from zxcvbn import zxcvbn
@@ -41,7 +42,7 @@ def score_password(password: str) -> dict:
     ValueError
         If *password* is empty or not a string.
     """
-    raise NotImplementedError("TODO: call zxcvbn(password) and return its result")
+    return zxcvbn(password)
 
 
 def get_score_label(score: int) -> str:

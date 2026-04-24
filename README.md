@@ -96,6 +96,19 @@ passforge --version
 
 ## Running the Tests
 
+Simplified commands:
+
+```bash
+make test
+make test-verbose
+make test-cov
+# Run one specific test file/function
+make test TEST=tests/test_scorer.py
+make test TEST=tests/test_scorer.py::test_score_password_returns_expected_keys
+```
+
+Equivalent direct command:
+
 ```bash
 pytest
 ```
