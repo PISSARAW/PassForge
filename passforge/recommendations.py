@@ -36,9 +36,15 @@ def get_feedback(result: dict) -> list[str]:
         A list of suggestion strings from zxcvbn's ``"feedback"`` key.
         Returns an empty list when zxcvbn provides no suggestions.
     """
-    raise NotImplementedError(
-        "TODO: read result['feedback']['suggestions'] and return it as a list"
-    )
+    if not isinstance(result, dict) or "feedback" not in result:
+        raise ValueError("Result must be a dict containing 'feedback'.")
+    feedback = result["feedback"]
+    suggestions = []
+    if "warning" in feedback and feedback["warning"]:
+        suggestions.append(feedback["warning"])
+    if "suggestions" in feedback and isinstance(feedback["suggestions"], list):
+        suggestions.extend(feedback["suggestions"])
+    return suggestions
 
 
 def owasp_tips(password: str, result: dict) -> list[str]:
@@ -67,9 +73,32 @@ def owasp_tips(password: str, result: dict) -> list[str]:
         A list of human-readable tip strings.  Returns an empty list
         when no specific issues are found.
     """
-    raise NotImplementedError(
-        "TODO: build and return a list of OWASP-style tip strings"
-    )
+    if not isinstance(password, str) or not password:
+        raise ValueError("Password must be a non-empty string.")
+    if not isinstance(result, dict) or "score" not in result or "sequence":
+        raise ValueError("Result must be a dict containing 'score' and 'sequence'.")
+    if result["score"] >= 2:
+        return []  # No tips needed for reasonably strong passwords 
+    tips = []
+    if len(password) < OWASP_MIN_LENGTH:
+        tips.append(f"Use at least {OWASP_MIN_LENGTH} characters.")
+    if not any(c.islower() for c in password):
+        tips.append("Include lowercase letters.")
+    if not any(c.isupper() for c in password):
+        tips.append("Include uppercase letters.")
+    if not any(c.isdigit() for c in password):
+        tips.append("Include digits.")
+    if not any(c in "!@#$%^&*()-_=+[]{}|;:'\",.<>?/" for c in password):
+        tips.append("Include symbols.")
+    if "sequence" in result and isinstance(result["sequence"], list):
+        for pattern in result["sequence"]:
+            if pattern.get("pattern") == "keyboard":
+                tips.append("Avoid keyboard patterns.")
+            elif pattern.get("pattern") == "repeat":
+                tips.append("Avoid repeated sequences.")
+            elif pattern.get("pattern") == "dictionary":
+                tips.append("Avoid common words or phrases.")
+    return tips
 
 
 def build_recommendation_report(password: str, result: dict) -> dict:
@@ -94,7 +123,15 @@ def build_recommendation_report(password: str, result: dict) -> dict:
         ``"has_issues"``
             ``True`` if any issues were found, ``False`` otherwise.
     """
-    raise NotImplementedError(
-        "TODO: call get_feedback and owasp_tips, merge results, "
-        "and return the report dict"
-    )
+    if not isinstance(password, str) or not password:
+        raise ValueError("Password must be a non-empty string.")
+    if not isinstance(result, dict):
+        raise ValueError("Result must be a dict.")
+    zxcvbn_feedback = get_feedback(result)
+    owasp_feedback = owasp_tips(password, result)
+    has_issues = bool(zxcvbn_feedback or owasp_feedback)
+    return {
+        "zxcvbn_feedback": zxcvbn_feedback,
+        "owasp_tips": owasp_feedback,
+        "has_issues": has_issues
+    }
