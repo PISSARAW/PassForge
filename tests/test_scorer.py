@@ -27,7 +27,7 @@ get_crack_time_display
 import pytest
 
 # TODO: uncomment once scorer is implemented
-from passforge.scorer import score_password
+from passforge.scorer import score_password, get_score_label, get_crack_time_display
 
 
 class TestScorePassword:
@@ -37,29 +37,41 @@ class TestScorePassword:
         assert "score" in result
 
     def test_raises_value_error_for_empty_string(self):
-        pytest.skip("TODO: implement scorer.score_password first")
+        assert isinstance(score_password(""), ValueError)
 
     def test_raises_value_error_for_non_string(self):
-        pytest.skip("TODO: implement scorer.score_password first")
+        assert isinstance(score_password(12345), ValueError)
 
     def test_common_password_scores_low(self):
-        pytest.skip("TODO: implement scorer.score_password first")
+        result = score_password("password")
+        assert result["score"] in (0, 1)
 
     def test_strong_password_scores_high(self):
-        pytest.skip("TODO: implement scorer.score_password first")
-
+        result = score_password("CorrectHorseBatteryStaple!2026")
+        assert result["score"] in (3, 4)
 
 class TestGetScoreLabel:
     def test_score_0_is_very_weak(self):
-        pytest.skip("TODO: implement scorer.get_score_label first")
+        result = score_password("password")
+        assert result["score"] == 0
+        label = get_score_label(result["score"])
+        assert label == "Very Weak" 
 
     def test_score_4_is_very_strong(self):
-        pytest.skip("TODO: implement scorer.get_score_label first")
+        result = score_password("CorrectHorseBatteryStaple!2026")
+        assert result["score"] == 4 
+        label = get_score_label(result["score"])
+        assert label == "Very Strong"
+
 
     def test_invalid_score_raises_value_error(self):
-        pytest.skip("TODO: implement scorer.get_score_label first")
-
+        assert isinstance(get_score_label(5), ValueError)
+        assert isinstance(get_score_label(-1), ValueError)
+        assert isinstance(get_score_label("3"), ValueError)
 
 class TestGetCrackTimeDisplay:
     def test_returns_non_empty_string(self):
-        pytest.skip("TODO: implement scorer.get_crack_time_display first")
+        result = score_password("CorrectHorseBatteryStaple!2026")
+        crack_time = get_crack_time_display(result)
+        assert isinstance(crack_time, str)
+        assert len(crack_time) > 0
