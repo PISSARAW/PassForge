@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "passforge"
+version = "0.1.0"
+description = "A CLI password strength analyzer powered by zxcvbn"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.9"
+dependencies = [
+    "zxcvbn>=4.4.28",
+]
+
+[project.scripts]
+passforge = "passforge.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
