@@ -4,6 +4,19 @@
 
 ---
 
+> ⚠️ **Personal project notice**
+>
+> PassForge is a **personal project**. The repository is public for transparency
+> and portfolio purposes, but it is **not intended for general use** nor for a
+> wide audience. It is not actively maintained as a product, comes with **no
+> support, no guarantees, and no roadmap**, and may change or break at any time.
+>
+> Feel free to read the code or take inspiration from it, but please do not rely
+> on it in production. For real-world password handling, prefer well-known and
+> audited libraries.
+
+---
+
 ## Overview
 
 PassForge analyzes the strength of a password directly from your terminal.
